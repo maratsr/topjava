@@ -28,9 +28,13 @@
     <h3><a href="index.html">Home</a></h3>
     <h2>${param.action == 'create' ? 'Create meal' : 'Edit meal'}</h2>
     <hr>
-    <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.Meal" scope="request"/>
     <form method="post" action="meals">
         <input type="hidden" name="id" value="${meal.id}">
+        <input type="hidden" name="datepartbegin" value="${begindate}">
+        <input type="hidden" name="timepartbegin" value="${begintime}">
+        <input type="hidden" name="datepartend" value="${enddate}">
+        <input type="hidden" name="timepartend" value="${endtime}">
+        <input type="hidden" name="mealsearchtmpl" value="${mealsearchtmpl}">
         <dl>
             <dt>DateTime:</dt>
             <dd><input type="datetime-local" value="${meal.dateTime}" name="dateTime"></dd>
@@ -43,7 +47,7 @@
             <dt>Calories:</dt>
             <dd><input type="number" value="${meal.calories}" name="calories"></dd>
         </dl>
-        <button type="submit">Save</button>
+        <button type="submit" name="modify">Save</button>
         <button onclick="window.history.back()">Cancel</button>
     </form>
 </section>

@@ -14,7 +14,7 @@ import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
 public abstract class AbstractUserController {
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
+    @Autowired // directly injection example (without setter using)
     private UserService service;
 
     public List<User> getAll() {
