@@ -1,9 +1,7 @@
 package ru.javawebinar.topjava;
 
-import org.junit.runner.RunWith;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.to.MealWithExceed;
@@ -16,7 +14,6 @@ import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
 
-@RunWith(SpringJUnit4ClassRunner.class)
 public class SpringMain {
 
     public static void main(String[] args) {
