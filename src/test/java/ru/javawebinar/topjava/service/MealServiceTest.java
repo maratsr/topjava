@@ -1,4 +1,6 @@
 package ru.javawebinar.topjava.service;
+//http://blog.qatools.ru/junit/junit-rules-tutorial
+
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
