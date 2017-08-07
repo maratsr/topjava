@@ -1,8 +1,11 @@
 package ru.javawebinar.topjava.service;
-//http://blog.qatools.ru/junit/junit-rules-tutorial
 
-
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,8 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
@@ -36,14 +41,50 @@ public class MealServiceTest {
     @Autowired
     private MealService service;
 
+    private static Map<String,Long> statistics = new HashMap<>();
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
+    @ClassRule
+    public static TestWatcher allTestWatcher = new TestWatcher() {
+        @Override
+        protected void finished(Description description) {
+            super.finished(description);
+            System.out.println("======================= STATISTICS =========================");
+            statistics.keySet().forEach(s -> System.out.println(s + " elapsed time=" + statistics.get(s) +" ms."));
+            System.out.println("============================================================");
+        }
+    };
+
+
+    @Rule
+    public TestWatcher watcher = new TestWatcher() {
+        private long timeMs;
+
+        @Override
+        protected void starting(Description description) {
+            this.timeMs = System.currentTimeMillis();
+        }
+
+        @Override
+        protected void finished(Description description) {
+            super.finished(description);
+            long delay= System.currentTimeMillis()-timeMs;
+            System.out.println("================> elapsed time=" + delay + " ms.");
+            statistics.put(description.getMethodName(), delay);
+        }
+    };
+
     @Test
     public void testDelete() throws Exception {
         service.delete(MEAL1_ID, USER_ID);
         MATCHER.assertCollectionEquals(Arrays.asList(MEAL6, MEAL5, MEAL4, MEAL3, MEAL2), service.getAll(USER_ID));
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void testDeleteNotFound() throws Exception {
+        thrown.expect(NotFoundException.class);
         service.delete(MEAL1_ID, 1);
     }
 

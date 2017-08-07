@@ -21,24 +21,27 @@ public class JpaMealRepositoryImpl implements MealRepository {
     @Override
     @Transactional
     public Meal save(Meal meal, int userId) {
-        User user = em.find(User.class, userId);
-        if (user == null || user.getId() != userId)
+        User userById   = em.find(User.class, userId); // paranoic mode - meal record could been deleted before update
+        if (userById == null)
             return null;
 
-        if (meal.getUser() == null)
-            meal.setUser(user);
-
-        if (meal.isNew()) {
+        if (!meal.isNew()) {
+            Meal oldMeal = get(meal.getId(), userId);
+            if (oldMeal == null)
+                return null;
+            else
+                meal.setUser(userById);
+            return em.merge(meal);
+        } else
+            meal.setUser(userById);
             em.persist(meal);
             return meal;
-        } else
-            return em.merge(meal);
     }
 
     @Override
     @Transactional
     public boolean delete(int id, int userId) {
-        User user = em.find(User.class, userId);
+        User user = em.find(User.class, userId);        // validate user before delete
         return user != null && user.getId()==userId &&
                 em.createNamedQuery(Meal.DELETE)
                         .setParameter("id", id)
