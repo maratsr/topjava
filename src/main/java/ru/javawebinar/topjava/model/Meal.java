@@ -22,6 +22,7 @@ public class Meal extends BaseEntity {
     public static final String FILTERED = "Meal.FILTERED";
 
     @Column(name = "date_time", nullable = false)
+    @NotNull
     private LocalDateTime dateTime;
 
     @Column(name = "description", nullable = false)
@@ -34,7 +35,7 @@ public class Meal extends BaseEntity {
     private int calories;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id", nullable = false,  referencedColumnName = "id")
     private User user;
 
