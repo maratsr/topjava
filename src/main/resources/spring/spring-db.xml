@@ -82,9 +82,32 @@
     </beans>
 
     <beans profile="jdbc">
+        <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+            <constructor-arg ref="dataSource"/>
+        </bean>
+        <bean id="namedJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+            <constructor-arg ref="dataSource"/>
+        </bean>
+
+        <bean id="mealRepository" class="ru.javawebinar.topjava.repository.jdbc.JdbcMealRepositoryImpl">
+            <constructor-arg index="0" ref="dataSource"/>
+            <constructor-arg index="1" ref="jdbcTemplate"/>
+            <constructor-arg index="2" ref="namedJdbcTemplate"/>
+        </bean>
+        <bean id="userRepository" class="ru.javawebinar.topjava.repository.jdbc.JdbcUserRepositoryImpl">
+            <constructor-arg index="0" ref="dataSource"/>
+            <constructor-arg index="1" ref="jdbcTemplate"/>
+            <constructor-arg index="2" ref="namedJdbcTemplate"/>
+        </bean>
     </beans>
+
     <beans profile="jpa">
+        <bean id="mealRepository" class="ru.javawebinar.topjava.repository.jpa.JpaMealRepositoryImpl"/>
+        <bean id="userRepository" class="ru.javawebinar.topjava.repository.jpa.JpaUserRepositoryImpl"/>
     </beans>
+
     <beans profile="datajpa">
+        <bean id="mealRepository" class="ru.javawebinar.topjava.repository.datajpa.DataJpaMealRepositoryImpl"/>
+        <bean id="userRepository" class="ru.javawebinar.topjava.repository.datajpa.UserJpaMealRepositoryImpl"/>
     </beans>
 </beans>
