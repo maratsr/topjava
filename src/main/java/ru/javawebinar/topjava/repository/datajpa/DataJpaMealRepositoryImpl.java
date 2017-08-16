@@ -35,7 +35,6 @@ public class DataJpaMealRepositoryImpl implements MealRepository {
 
     @Override
     public Meal get(int id, int userId) {
-        //return crudRepository.findOne(id);
         List<Meal> meals = crudRepository.findByUserAndId(userRepository.get(userId), id);
         return meals.size()==1 ? meals.get(0) : null;
     }

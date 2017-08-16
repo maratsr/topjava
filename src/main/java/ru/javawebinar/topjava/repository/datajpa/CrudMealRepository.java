@@ -1,6 +1,5 @@
 package ru.javawebinar.topjava.repository.datajpa;
 
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -31,4 +30,7 @@ public interface CrudMealRepository extends JpaRepository<Meal, Integer> {
     List<Meal> findByUserAndDateTimeBetweenOrderByDateTimeDesc(User user, LocalDateTime start, LocalDateTime end);
 
     List<Meal> findByUserAndId(User user, Integer id);
+
+    @Query("Select m FROM Meal m WHERE m.id=:id")
+    Meal getMealById(@Param("id") int id);
 }

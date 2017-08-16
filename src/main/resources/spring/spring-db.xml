@@ -109,8 +109,5 @@
     <beans profile="datajpa">
         <context:component-scan base-package="ru.javawebinar.**.repository.datajpa"/>
         <jpa:repositories base-package="ru.javawebinar.**.repository.datajpa"/>
-
-        <!--<bean id="mealRepository" class="ru.javawebinar.topjava.repository.datajpa.DataJpaMealRepositoryImpl"/>
-        <bean id="userRepository" class="ru.javawebinar.topjava.repository.datajpa.DataJpaUserRepositoryImpl"/> -->
     </beans>
 </beans>
