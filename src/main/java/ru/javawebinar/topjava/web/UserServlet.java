@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import ru.javawebinar.topjava.AuthorizedUser;
-import ru.javawebinar.topjava.web.user.AdminRestController;
+import ru.javawebinar.topjava.web.controller.user.AdminRestController;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;

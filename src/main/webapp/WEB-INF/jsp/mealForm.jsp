@@ -9,10 +9,19 @@
 <body>
 <section>
     <h3><a href="index.html">Home</a></h3>
-    <h2>${param.action == 'create' ? 'Create meal' : 'Edit meal'}</h2>
+    <%--<h2>${param.action == 'create' ? 'Create meal' : 'Edit meal'}</h2>--%>
+    <h2>
+        <c:if test = "${updated == 1}"><h2>Edit meal</h2></c:if>
+        <c:if test = "${updated != 1}"><h2>Create meal</h2></c:if>
+    </h2>
+    <%--<h2>${param.action == 'create' ? 'Create meal' : 'Edit meal'}</h2>--%>
     <hr>
     <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.Meal" scope="request"/>
-    <form method="post" action="meals">
+    <h2><form method="post"
+        <c:if test = "${updated == 1}">action="/meals/update"></c:if>
+        <c:if test = "${updated != 1}">action="/meals/create"></c:if>
+    </h2>
+    <%--<form method="post" action="/meals/update">--%>
         <input type="hidden" name="id" value="${meal.id}">
         <dl>
             <dt>DateTime:</dt>

@@ -4,8 +4,8 @@ import org.springframework.context.support.GenericXmlApplicationContext;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.to.MealWithExceed;
-import ru.javawebinar.topjava.web.meal.MealRestController;
-import ru.javawebinar.topjava.web.user.AdminRestController;
+import ru.javawebinar.topjava.web.controller.meal.MealRestController;
+import ru.javawebinar.topjava.web.controller.user.AdminRestController;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

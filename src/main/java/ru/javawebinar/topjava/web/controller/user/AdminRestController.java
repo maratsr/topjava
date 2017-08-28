@@ -1,4 +1,4 @@
-package ru.javawebinar.topjava.web.user;
+package ru.javawebinar.topjava.web.controller.user;
 
 import org.springframework.stereotype.Controller;
 import ru.javawebinar.topjava.model.User;
