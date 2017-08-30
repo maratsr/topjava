@@ -1,4 +1,4 @@
-[![VersionEye](https://www.versioneye.com/user/projects/59a1dbe46725bd0037d98369/badge.svg)](https://www.versioneye.com/user/projects/59a1dbe46725bd0037d98369)
+[![VersionEye](https://www.versioneye.com/user/projects/59a703c80fb24f003f742c28/badge.svg)](https://www.versioneye.com/user/projects/59a703c80fb24f003f742c28)
 Java Enterprise Online Project 
 ===============================
 Разработка полнофункционального Spring/JPA Enterprise приложения c авторизацией и правами доступа на основе ролей с использованием наиболее популярных инструментов и технологий Java: Maven, Spring MVC, Security, JPA(Hibernate), REST(Jackson), Bootstrap (css,js), datatables, jQuery + plugins, Java 8 Stream and Time API и хранением в базах данных Postgresql и HSQLDB.
