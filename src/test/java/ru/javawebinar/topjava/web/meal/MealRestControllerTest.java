@@ -21,6 +21,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
+import static ru.javawebinar.topjava.util.DateTimeUtil.RU_DATE_FORMATTER;
+import static ru.javawebinar.topjava.util.DateTimeUtil.RU_TIME_FORMATTER;
 import static ru.javawebinar.topjava.util.MealsUtil.createWithExceed;
 
 public class MealRestControllerTest extends AbstractControllerTest{
@@ -90,10 +92,10 @@ public class MealRestControllerTest extends AbstractControllerTest{
     @Test
     public void testBetween() throws Exception {
         mockMvc.perform(get(REST_URL +
-                    "between?startDate=" + DateTimeUtil.toString(MEAL2.getDate()) +
-                    "&endDate="  + DateTimeUtil.toString(MEAL3.getDate()) +
-                    "&startTime="+ DateTimeUtil.toString(MEAL2.getTime()) +
-                    "&endTime="  + DateTimeUtil.toString(MEAL3.getTime())))
+                    "between?startDate=" + RU_DATE_FORMATTER.format(MEAL2.getDate()) +
+                    "&endDate="  + RU_DATE_FORMATTER.format(MEAL3.getDate()) +
+                    "&startTime="+ RU_TIME_FORMATTER.format(MEAL2.getTime()) +
+                    "&endTime="  + RU_TIME_FORMATTER.format(MEAL3.getTime())))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MATCHER_EXCEED.contentListMatcher(

@@ -7,9 +7,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.to.MealWithExceed;
-import ru.javawebinar.topjava.util.DateTimeUtil;
 
 import java.net.URI;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import static ru.javawebinar.topjava.util.DateTimeUtil.*;
@@ -54,25 +55,25 @@ public class MealRestController extends AbstractMealController {
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
+    // using as -- http://localhost:8900/rest/meals/between?startDate=30.05.2015&endDate=30.05.2015&startTime=11:00&endTime=21:00
+    // if the value of date or time parameters is incorrect - the parameter will be ignored and nulled without error,
     @GetMapping(value = "/between", produces = MediaType.APPLICATION_JSON_VALUE)
-    // using as -- http://localhost:8900/rest/meals/between?startDate=2015-05-30&endDate=2015-05-30&startTime=11:00&endTime=21:00
-    public List<MealWithExceed>  getByMail(
-            @RequestParam(value = "startDate", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") String startDate,
-            @RequestParam(value = "endDate",   required = false) @DateTimeFormat(pattern="yyyy-MM-dd") String endDate,
-            @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern="HH:mm:ss")   String startTime,
-            @RequestParam(value = "endTime",   required = false) @DateTimeFormat(pattern="HH:mm:ss")   String endTime) {
+    public List<MealWithExceed>  getBetween(
+            @RequestParam(value = "startDate", required = false) LocalDate startDate,
+            @RequestParam(value = "endDate",   required = false) LocalDate endDate,
+            @RequestParam(value = "startTime", required = false) LocalTime startTime,
+            @RequestParam(value = "endTime",   required = false) LocalTime endTime) {
 
-        if (startDate == null)
-            startDate = DateTimeUtil.toString(MIN_DATE);
-        if (endDate == null)
-            endDate = DateTimeUtil.toString(MAX_DATE);
         if (startTime == null)
-            startTime = DateTimeUtil.toString(MIN_TIME);
+            startTime = MIN_TIME;
         if (endTime == null)
-            endTime = DateTimeUtil.toString(MAX_TIME);
+            endTime = MAX_TIME;
+        if (startDate == null)
+            startDate = MIN_DATE;
+        if (endDate == null)
+            endDate = MAX_DATE;
 
-        return super.getBetween(parseLocalDate(startDate), parseLocalTime(startTime),
-                parseLocalDate(endDate),parseLocalTime(endTime));
+        return super.getBetween(startDate, startTime, endDate, endTime);
     }
 
 }
