@@ -3,16 +3,19 @@ package ru.javawebinar.topjava.web.meal;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.ResultActions;
 import ru.javawebinar.topjava.TestUtil;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.web.AbstractControllerTest;
 import ru.javawebinar.topjava.web.json.JsonUtil;
 
+import java.time.Month;
+
+import static java.time.LocalDateTime.of;
 import static org.junit.Assert.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -68,5 +71,34 @@ public class MealRestControllerTest extends AbstractControllerTest{
         MATCHER.assertEquals(updated, mealService.get(MEAL1_ID, USER_ID));
     }
 
+    @Test
+    public void testCreate() throws Exception {
+        int amountBefore = mealService.getAll(USER_ID).size();
+        Meal expected = new Meal(null, of(2015, Month.MAY, 31, 23, 0),
+                "Кефирчик от бессоницы", 50);
+        ResultActions action = mockMvc.perform(post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(expected))).andExpect(status().isCreated());
 
+        Meal returned = MATCHER.fromJsonAction(action);
+        expected.setId(returned.getId());
+
+        MATCHER.assertEquals(expected, returned);
+        Assert.assertEquals(mealService.getAll(USER_ID).size(), ++amountBefore);
+    }
+
+    @Test
+    public void testBetween() throws Exception {
+        mockMvc.perform(get(REST_URL +
+                    "between?startDate=" + DateTimeUtil.toString(MEAL2.getDate()) +
+                    "&endDate="  + DateTimeUtil.toString(MEAL3.getDate()) +
+                    "&startTime="+ DateTimeUtil.toString(MEAL2.getTime()) +
+                    "&endTime="  + DateTimeUtil.toString(MEAL3.getTime())))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(MATCHER_EXCEED.contentListMatcher(
+                        createWithExceed(MEAL3, false),
+                        createWithExceed(MEAL2, false)
+                ));
+    }
 }
