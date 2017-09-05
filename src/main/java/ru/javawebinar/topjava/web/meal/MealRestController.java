@@ -64,15 +64,6 @@ public class MealRestController extends AbstractMealController {
             @RequestParam(value = "startTime", required = false) LocalTime startTime,
             @RequestParam(value = "endTime",   required = false) LocalTime endTime) {
 
-        if (startTime == null)
-            startTime = MIN_TIME;
-        if (endTime == null)
-            endTime = MAX_TIME;
-        if (startDate == null)
-            startDate = MIN_DATE;
-        if (endDate == null)
-            endDate = MAX_DATE;
-
         return super.getBetween(startDate, startTime, endDate, endTime);
     }
 
