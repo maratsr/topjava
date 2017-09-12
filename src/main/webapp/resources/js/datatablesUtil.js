@@ -1,12 +1,27 @@
 function makeEditable() {
     $(".delete").click(function () {
-        deleteRow($(this).attr("id"));
+        deleteRow($(this).closest('tr').attr("id"));
     });
 
     $("#detailsForm").submit(function () {
         save();
         return false;
     });
+
+    if(isUserMode()) {
+        $(".checkActivity").change(function() {
+            $.ajax({
+                type: "POST",
+                url: ajaxUrl+"activity",
+                data: {id: $(this).closest('tr').attr("id"), active: this.checked},
+                dataType: 'json',
+                success: function () {
+                    updateTable();
+                    successNoty("Saved");
+                }
+            });
+        });
+    }
 
     $(document).ajaxError(function (event, jqXHR, options, jsExc) {
         failNoty(event, jqXHR, options, jsExc);
@@ -15,6 +30,23 @@ function makeEditable() {
     // solve problem with cache in IE: https://stackoverflow.com/a/4303862/548473
     $.ajaxSetup({cache: false});
 }
+
+function filter() {
+    $.get(ajaxUrl + "/filter", {
+        startDate: $("#startDate").val(), endDate: $("#endDate").val(),
+        startTime: $("#startTime").val(), endTime: $("#endTime").val()
+        }, function (data) {
+            datatableApi.clear().rows.add(data).draw();
+    });
+}
+
+function reset() {
+    document.getElementById("startDate").value  = "";
+    document.getElementById("endDate").value  = "";
+    document.getElementById("endTime").value  = "";
+    document.getElementById("startTime").value  = "";
+}
+
 
 function add() {
     $("#detailsForm").find(":input").val("");
@@ -33,9 +65,13 @@ function deleteRow(id) {
 }
 
 function updateTable() {
-    $.get(ajaxUrl, function (data) {
-        datatableApi.clear().rows.add(data).draw();
-    });
+    if( isMealMode() ) {
+        filter();
+    } else {
+        $.get(ajaxUrl, function (data) {
+            datatableApi.clear().rows.add(data).draw();
+        });
+    }
 }
 
 function save() {
@@ -78,4 +114,12 @@ function failNoty(event, jqXHR, options, jsExc) {
         type: "error",
         layout: "bottomRight"
     }).show();
+}
+
+function isMealMode() {
+    return $('#startDate').length;
+}
+
+function isUserMode() {
+    return !isMealMode();
 }

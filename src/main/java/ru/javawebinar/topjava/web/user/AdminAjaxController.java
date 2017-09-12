@@ -34,4 +34,14 @@ public class AdminAjaxController extends AbstractUserController {
             super.create(user);
         }
     }
+
+    @PostMapping(value = "/activity", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody String setActivity(@RequestParam("id") Integer id, @RequestParam("active") Boolean active) {
+        User user = super.get(id);
+        if (user != null ) {
+            user.setEnabled(active);
+            super.update(user, id);
+        }
+        return "done";
+    }
 }

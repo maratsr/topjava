@@ -16,10 +16,55 @@
                 <h3><spring:message code="meal.title"/></h3>
                 <br/>
                 <div class="view-box">
-                    <a class="btn btn-primary" onclick="add()">
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                        <spring:message code="common.add"/>
-                    </a>
+                    <div class="form-horizontal" id="filterZone">
+                        <div class="form-group">
+                            <label for="startDate" class="control-label col-xs-2"><spring:message code="meal.startDate"/></label>
+                            <div class="col-xs-2">
+                                <input type="date" class="form-control" id="startDate" name="startDate" placeholder="<spring:message code="meal.startDate"/>">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="endDate" class="control-label col-xs-2"><spring:message code="meal.endDate"/></label>
+                            <div class="col-xs-2">
+                                <input type="date" class="form-control" id="endDate" name="endDate" placeholder="<spring:message code="meal.endDate"/>">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="startTime" class="control-label col-xs-2"><spring:message code="meal.startTime"/></label>
+                            <div class="col-xs-2">
+                                <input type="time" class="form-control" id="startTime" name="startTime" placeholder="<spring:message code="meal.startTime"/>">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="endTime" class="control-label col-xs-2"><spring:message code="meal.endTime"/></label>
+                            <div class="col-xs-2">
+                                <input type="time" class="form-control" id="endTime" name="endTime" placeholder="<spring:message code="meal.endTime"/>">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <a class="btn btn-primary" onclick="filter()">
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                            <spring:message code="meal.filter"/>
+                        </a>
+                        <a class="btn btn-primary" onclick="reset()">
+                            <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                            <spring:message code="common.cancel"/>
+                        </a>
+
+                    </div>
+
+
+                    <div class="form-group">
+                        <a class="btn btn-primary" onclick="add()">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                            <spring:message code="common.add"/>
+                        </a>
+                    </div>
                     <table class="table table-striped display" id="datatable">
                     <%--<table border="1" cellpadding="8" cellspacing="0">--%>
                         <thead>
@@ -33,12 +78,12 @@
                         </thead>
                         <c:forEach items="${meals}" var="meal">
                             <jsp:useBean id="meal" scope="page" type="ru.javawebinar.topjava.to.MealWithExceed"/>
-                            <tr class="${meal.exceed ? 'exceeded' : 'normal'}">
+                            <tr class="${meal.exceed ? 'exceeded' : 'normal'}" id="${meal.id}">
                                 <td>${fn:formatDateTime(meal.dateTime)}</td>
                                 <td>${meal.description}</td>
                                 <td>${meal.calories}</td>
                                 <td><a><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></td>
-                                <td><a class="delete" id="${meal.id}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
+                                <td><a class="delete"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
                             </tr>
                         </c:forEach>
                     </table>
