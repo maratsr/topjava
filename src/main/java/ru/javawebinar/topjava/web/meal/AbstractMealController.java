@@ -55,6 +55,14 @@ public abstract class AbstractMealController {
         service.update(meal, userId);
     }
 
+
+    public void update(MealWithExceed mealTo, int id) {
+        int userId = AuthorizedUser.id();
+        assureIdConsistent(mealTo, id);
+        log.info("update {} for User {}", mealTo, userId);
+        service.update(mealTo, userId);
+    }
+
     /**
      * <ol>Filter separately
      *   <li>by date</li>
