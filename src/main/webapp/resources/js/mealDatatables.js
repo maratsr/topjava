@@ -21,14 +21,6 @@ $(function () {
             "url": ajaxUrl,
             "dataSrc": ""
         },
-        createdRow: function (date, type, row) {
-            if (type === "display") {
-                //debugger;
-                //data ? $.closest("tr").toggleClass("normal") : $.closest("tr").toggleClass("exceeded");
-                $(row).addClass(date ? "normal" : "exceeded");
-            }
-        },
-
         "paging": false,
         "info": true,
         "columns": [
@@ -36,7 +28,7 @@ $(function () {
                 "data": "dateTime",
                 "render": function (date, type, row) {
                     if (type === "display") {
-                        return date.substring(0, 10);
+                        return date.replace("T", " ");
                     }
                     return date;
                 }
@@ -65,9 +57,7 @@ $(function () {
             ]
         ],
         "createdRow": function (row, data, dataIndex) {
-            if (!data.enabled) {
-                $(row).addClass("disabled");
-            }
+            $(row).addClass(data.exceed ? "exceeded" : "normal");
         },
         "initComplete": makeEditable
     });

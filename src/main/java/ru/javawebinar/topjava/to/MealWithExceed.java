@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 public class MealWithExceed extends BaseTo implements Serializable{
     private static final long serialVersionUID = 2L;
 
-    @NotBlank
     private LocalDateTime dateTime;
 
     @NotBlank
