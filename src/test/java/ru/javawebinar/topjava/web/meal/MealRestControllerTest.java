@@ -72,7 +72,6 @@ public class MealRestControllerTest extends AbstractControllerTest {
     @Test
     public void testUpdate() throws Exception {
         Meal updated = getUpdated();
-
         mockMvc.perform(put(REST_URL + MEAL1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated))
@@ -128,5 +127,16 @@ public class MealRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(content().json(JsonUtil.writeValue(
                         MealsUtil.getWithExceeded(Arrays.asList(MEAL6, MEAL5, MEAL4, MEAL3, MEAL2, MEAL1), USER.getCaloriesPerDay()))));
+    }
+
+    @Test
+    public void testNonValidUpdate() throws Exception {
+        Meal updated = getNonValidUpdated();
+
+        mockMvc.perform(put(REST_URL + MEAL1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(updated))
+                .with(userHttpBasic(USER)))
+                .andExpect(status().isUnprocessableEntity());
     }
 }
