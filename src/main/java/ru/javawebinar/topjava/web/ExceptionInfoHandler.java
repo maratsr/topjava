@@ -6,12 +6,18 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.TransactionSystemException;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import ru.javawebinar.topjava.util.ValidationUtil;
 import ru.javawebinar.topjava.util.exception.ErrorInfo;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolationException;
+import java.util.StringJoiner;
 
 @ControllerAdvice(annotations = RestController.class)
 @Order(Ordered.HIGHEST_PRECEDENCE + 5)
@@ -31,6 +37,23 @@ public class ExceptionInfoHandler {
     @ResponseBody
     public ErrorInfo conflict(HttpServletRequest req, DataIntegrityViolationException e) {
         return logAndGetErrorInfo(req, e, true);
+    }
+
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY) // 422
+    @ExceptionHandler(BindException.class) // T
+    @ResponseBody
+    public ErrorInfo validateError(HttpServletRequest req, BindException be) {
+        //LOG.error("Exception at request " + req.getRequestURL(), rootCause);
+        StringJoiner joiner = new StringJoiner("<br>");
+        be.getBindingResult().getFieldErrors().forEach(
+                fe -> {
+                    String msg = fe.getDefaultMessage();
+                    if (!msg.startsWith(fe.getField())) {
+                        msg = fe.getField() + ':' + msg;
+                    }
+                    joiner.add(msg);
+                });
+        return new ErrorInfo(req.getRequestURL(), "!!! Binding Error", joiner.toString());
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

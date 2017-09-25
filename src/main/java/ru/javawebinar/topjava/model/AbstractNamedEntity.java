@@ -2,6 +2,7 @@ package ru.javawebinar.topjava.model;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
 
 
