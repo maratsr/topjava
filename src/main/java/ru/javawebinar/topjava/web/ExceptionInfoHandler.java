@@ -6,9 +6,8 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.transaction.TransactionSystemException;
 import org.springframework.validation.BindException;
-import org.springframework.validation.BindingResult;
+
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +16,6 @@ import ru.javawebinar.topjava.util.exception.ErrorInfo;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.StringJoiner;
 
@@ -45,6 +43,8 @@ public class ExceptionInfoHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class) // T
     @ResponseBody
     public ErrorInfo bindError(HttpServletRequest req, MethodArgumentNotValidException be) {
+        System.out.println("-------------------MethodArgumentNotValidException");
+        System.out.println(be.getBindingResult().getAllErrors().get(0).toString());
         //LOG.error("Exception at request " + req.getRequestURL(), rootCause);
         return getBindErrorInfo(req, be.getBindingResult().getFieldErrors());
     }
@@ -54,6 +54,7 @@ public class ExceptionInfoHandler {
     @ResponseBody
     public ErrorInfo validateError(HttpServletRequest req, BindException be) {
         //LOG.error("Exception at request " + req.getRequestURL(), rootCause);
+        System.out.println("---------------BindException");
         return getBindErrorInfo(req, be.getFieldErrors());
     }
 
