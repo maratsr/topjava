@@ -35,9 +35,6 @@ public class AdminRestController extends AbstractUserController {
             throw new BindException(bindingResult);
         User created = super.create(user);
 
-//        HttpHeaders httpHeaders = new HttpHeaders();
-//        httpHeaders.setLocation(uriOfNewResource);
-
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
@@ -53,10 +50,11 @@ public class AdminRestController extends AbstractUserController {
 
     @Override
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void update(@Valid @RequestBody User user, @PathVariable("id") int id, BindingResult bindingResult) throws BindException {
-        if (bindingResult.hasErrors())
-            throw new BindException(bindingResult);
-        super.update(user, id, bindingResult);
+    public void update(@Valid @RequestBody User user, @PathVariable("id") int id) {
+//        if (bindingResult.hasErrors())
+//            throw new BindException(bindingResult);
+        super.update(user, id);
+
     }
 
     @Override

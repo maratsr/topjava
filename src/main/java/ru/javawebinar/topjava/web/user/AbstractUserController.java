@@ -41,7 +41,7 @@ public abstract class AbstractUserController {
         service.delete(id);
     }
 
-    public void update(User user, int id,  BindingResult bindingResult) throws BindException {
+    public void update(User user, int id)  {
         log.info("update {} with id={}", user, id);
         assureIdConsistent(user, id);
         service.update(user);

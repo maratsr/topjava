@@ -19,8 +19,12 @@ public class GlobalControllerExceptionHandler {
         LOG.error("Exception at request " + req.getRequestURL(), e);
         ModelAndView mav = new ModelAndView("exception/exception");
         Throwable rootCause = ValidationUtil.getRootCause(e);
-        mav.addObject("exception", rootCause);
-        mav.addObject("message", rootCause.toString());
+        if (rootCause.getMessage().contains("email") && rootCause.getMessage().contains("unique"))
+            mav.addObject("message", "User with this email already exists");
+        else {
+            mav.addObject("exception", rootCause);
+            mav.addObject("message", rootCause.toString());
+        }
 
         // Interceptor is not invoked, put userTo
         AuthorizedUser authorizedUser = AuthorizedUser.safeGet();
